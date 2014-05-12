@@ -1,0 +1,7 @@
+#!/bin/sh
+if [ "$JAVA_HOME" = "" ] ; then JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/jre
+fi
+if [ "$ASPECTJ_HOME" = "" ] ; then ASPECTJ_HOME=/home/asha/Music/Asha/yslow_android/yslow_android/lib_android_performance_monitor/libs/InstrumentationPackage/aspectj1.7
+fi
+
+"$JAVA_HOME/bin/java" -classpath "$ASPECTJ_HOME/lib/aspectjtools.jar:$JAVA_HOME/lib/tools.jar:$CLASSPATH" -Xmx256M org.aspectj.tools.ajc.Main "$@"

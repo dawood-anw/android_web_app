@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="build-jar" name="Automated-UI-Profiler">
+	<property environment="env" />
+	<property name="debuglevel" value="source,lines,vars" />
+	<property name="source" value="1.7" />
+	<property name="src.dir" value="src" />
+	<property name="bin.dir" value="bin" />
+	<property name="jar.dir" value="jar" />
+	<property name="external.lib.dir" value="libs" />
+	<property name="main.class" value="src.com.imaginea.adbexplorer.Profiling" />
+	<property name="final.jar" value="${jar.dir}/yslow.jar" />
+
+
+	<path id="lib.path">
+		<fileset dir="${external.lib.dir}" includes="**/*.jar" />
+	</path>
+
+	<path id="project.classpath">
+		<fileset dir="${external.lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<target name="init">
+		<mkdir dir="${bin.dir}" />
+		<copy includeemptydirs="false" todir="${bin.dir}">
+			<fileset dir="${src.dir}">
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="clean">
+		<delete dir="${bin.dir}" />
+	</target>
+
+	<target name="cleanall" depends="clean" />
+
+	<target name="build" depends="init">
+		<javac debug="on" includeantruntime="false" destdir="${bin.dir}"
+			source="${source}">
+			<src path="${src.dir}" />
+			<classpath refid="project.classpath" />
+			<compilerarg value="-XDignore.symbol.file" />
+		</javac>
+	</target>
+
+	<target name="build-jar" depends="build">
+		<delete file="${final.jar}" />
+		<mkdir dir="${jar.dir}" />
+		<jar destfile="${final.jar}" basedir="${bin.dir}" />
+	</target>
+
+
+
+
+</project>

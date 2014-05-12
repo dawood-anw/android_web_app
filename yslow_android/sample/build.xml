@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="" default="build-test" name="Yslow-test">
+	<property environment="env" />
+	<property name="main.dir" value="../sample" />
+	<property name="debuglevel" value="source,lines,vars" />
+	<property name="source" value="1.7" />
+	<property name="src.dir" value="../library/src" />
+	<property name="bin.dir" value="../library/bin" />
+	<property name="bin.test.dir" value="bin" />
+	<property name="src.test.dir" value="src" />
+	<property name="external.lib.dir" value="../library/libs" />
+	<property name="jar-dir" value="../library/jar" />
+	<property name="main-class" value="com.imaginea.adbexplorer.Profiling" />
+
+
+	<!-- <copy todir="../sample/InstrumentationPackage"> <fileset dir="${external.lib.dir}/InstrumentationPackage" 
+		/> </copy> -->
+
+
+	<path id="lib.path">
+		<fileset dir="${external.lib.dir}" includes="**/*.jar" />
+	</path>
+
+	<path id="project.classpath">
+		<fileset dir="${external.lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<path id="project.test.classpath">
+		<fileset dir="${jar-dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+
+	<target name="init" description="init the build" depends="clean">
+		<mkdir dir="${bin.test.dir}" />
+		<mkdir dir="${bin.dir}" />
+		<copy includeemptydirs="false" todir="${bin.dir}">
+			<fileset dir="${src.dir}">
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="clean" description="clean the build">
+		<delete dir="${bin.dir}" />
+	</target>
+
+	<target name="cleanall" depends="clean" description="clean  all" />
+
+
+	<!-- Compile the yslow lib project -->
+
+	<target name="build" depends="init" description="compile the lib project">
+		<javac debug="on" includeantruntime="false" destdir="${bin.dir}"
+			source="${source}">
+			<src path="${src.dir}" />
+			<classpath refid="project.classpath" />
+			<compilerarg value="-XDignore.symbol.file" />
+		</javac>
+	</target>
+
+
+	<!-- build the yslow lib jar -->
+
+	<target name="build-jar" depends="build" description="build the jar">
+		<delete file="${jar-dir}/yslow.jar" />
+		<mkdir dir="${jar-dir}" />
+		<jar destfile="${jar-dir}/yslow.jar" basedir="${bin.dir}">
+			<manifest>
+				<attribute name="Class-Path" value="${jar-dir}/yslow.jar; " />
+			</manifest>
+		</jar>
+	</target>
+
+	<!-- Compile the yslow test project -->
+
+	<target name="build-test" depends="build-jar"
+		description="compile the  test java source files">
+		<javac srcdir="." destdir="${bin.test.dir}" includeantruntime="false">
+			<classpath>
+				<pathelement path="${jar-dir}/yslow.jar" />
+			</classpath>
+		</javac>
+	</target>
+
+	<!-- Run the yslow test project -->
+	<!-- <target name="run" depends="build-test"> <java classname="com.imaginea.adbexplorer.Profiling" 
+		fork="true" dir="${bin.test.dir}"> <classpath> <pathelement location="${jar-dir}/yslow.jar" 
+		/> </classpath> </java> </target> -->
+
+</project>
