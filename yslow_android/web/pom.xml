@@ -6,7 +6,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>yslow-sample</artifactId>
+	<artifactId>yslow-web</artifactId>
 	<packaging>war</packaging>
 	<dependencies>
         <dependency>
@@ -17,14 +17,14 @@
 	</dependencies>
 	
 	<build>
-		<finalName>yslow-sample</finalName>
+		<finalName>yslow-web</finalName>
 		<plugins>
 			<plugin>
 		        <groupId>org.apache.maven.plugins</groupId>
 		        <artifactId>maven-war-plugin</artifactId>
 		        <version>2.4</version>
 		        <configuration>
-		        	<webappDirectory>${basedir}/src/main/webapp</webappDirectory>
+		        	<webXml> ${basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
 		        </configuration>
 			</plugin>
 			<plugin>
